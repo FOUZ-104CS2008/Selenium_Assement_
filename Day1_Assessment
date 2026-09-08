@@ -1,0 +1,90 @@
+#TestCas-1
+
+package Days1_assessment;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.io.FileHandler;
+
+public class TestCase1 {
+
+	public static void main(String[] args) throws InterruptedException, IOException {
+		// TODO Auto-generated method stub
+		WebDriver driver =new EdgeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		driver.get("https://www.saucedemo.com/?utm_source");
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//input[@type='submit']")).submit();
+        Thread.sleep(1000);
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        WebElement ele=driver.findElement(By.xpath("//footer[@class='footer']"));
+		js.executeScript("arguments[0].scrollIntoView(true)",ele);
+		Thread.sleep(1000);
+		TakesScreenshot tks= (TakesScreenshot) driver;
+        File src=tks.getScreenshotAs(OutputType.FILE);
+        File dest=new File("./ss/product-page.png");
+        FileHandler.copy(src, dest); 
+        
+        driver.quit();
+
+
+	}
+
+}
+
+
+
+
+
+
+
+
+#TestCase2
+
+package Days1_assessment;
+
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class TestCase2 {
+
+    public static void main(String[] args) throws InterruptedException {
+    	WebDriver driver= new ChromeDriver();
+	     driver.manage().window().maximize();
+	     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	     driver.get("https://www.myntra.com/");
+	     driver.findElement(By.className("desktop-searchBar")).sendKeys("lip blam",Keys.ENTER);
+	     Thread.sleep(3000);
+	     WebElement ele= driver.findElement(By.xpath("//span[@class='product-wishlistFlex product-actionsButton product-wishlist '][1]"));
+	     Thread.sleep(2000);
+	     JavascriptExecutor js = (JavascriptExecutor)driver;
+	     js.executeScript("arguments[0].click()", ele);
+	     if(driver.getCurrentUrl().equals("https://www.myntra.com/login?referer=https://www.myntra.com/lip-blam?rawQuery=lip%20blam"))
+	     {
+	    	 System.out.println("Product is added to whislist ");
+	     }
+	     else
+	     {
+	    	 System.out.println("Product is not added to whislist ");
+	     }
+    }
+}
+
+
