@@ -1,0 +1,119 @@
+#TestCas1
+
+package Day4_Assessment;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+
+public class TestCase1 {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver driver = new EdgeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		driver.navigate().to("https://www.facebook.com/");
+		
+		//count of all the text fields
+		List<WebElement> text = driver.findElements(By.tagName("input"));
+		System.out.println(text.size());
+		
+		//entering data into a text field
+		for(WebElement ele : text)
+		{
+			System.out.println(ele.getAccessibleName());
+			if (ele.getAccessibleName().equals("Password"))
+			{
+				ele.sendKeys("Fouziya");
+			}
+		}
+    driver.quit();
+	}
+}
+
+
+
+
+#TestCase2
+
+package Day4_Assessment;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class TestCase2 {
+
+	public static void main(String[] args) throws InterruptedException {
+				WebDriver driver = new ChromeDriver();
+				driver.manage().window().maximize();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+				driver.get("https://www.zomato.com/bangalore/delivery");
+			    driver.findElement(By.cssSelector("[type='button']")).click();
+			    //driver.switchTo().frame(0);
+			    
+			    WebElement ref = driver.findElement(By.id("auth-login-ui"));
+			    driver.switchTo().frame(ref);
+			    driver.findElement(By.xpath("//input[@inputmode='numeric']")).sendKeys("9019960024");
+			    Thread.sleep(1000);
+			    driver.switchTo().defaultContent();
+			    
+			    System.out.println(driver.findElement(By.xpath("//div[text()='Delivery']")).getText());
+			    driver.quit();
+
+			}
+
+}
+
+
+
+
+
+
+#TestCase3
+
+package Day4_Assessment;
+import java.time.Duration;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.interactions.Actions;
+public class TestCase3 {
+
+	public static void main(String[] args) throws InterruptedException {
+		WebDriver driver = new EdgeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		driver.get("https://bigbasket.com");
+		driver.findElement(By.xpath("//input[@type='text']")).sendKeys("apples",Keys.ENTER);
+		Thread.sleep(2000);
+		Actions act = new Actions(driver);
+		WebElement v = driver.findElement(By.xpath("//button[text()='Add']"));
+		Thread.sleep(2000);
+		act.scrollToElement(v).perform();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//button[text()='Add']")).click();
+		System.out.println(driver.findElement(By.xpath("//p[text()='An item has been added to your basket successfully']")).getText());
+		Thread.sleep(2000);
+		driver.quit();
+	}
+}
+
+
+
+
+
