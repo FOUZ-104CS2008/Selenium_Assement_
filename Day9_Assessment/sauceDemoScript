@@ -1,0 +1,21 @@
+package KeywordFrameworkImplemtation;
+
+import KeywordDrive.sauceDemoExecutor;
+
+public class sauceDemoScript {
+
+	public static void main(String[] args) throws InterruptedException {
+		sauceDemoExecutor e1=new sauceDemoExecutor();
+       e1.executor("LAUNCH_BROWSER");
+       e1.executor("OPEN_URL");
+       e1.executor("USER_TF");
+       e1.executor("PASS_TF");
+       Thread.sleep(2000);
+       e1.executor("LOGIN_BUTTON");
+       Thread.sleep(2000);
+       e1.executor("CLOSE_BROWSER");
+       
+       
+	}
+
+}
