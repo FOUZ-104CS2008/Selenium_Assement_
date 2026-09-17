@@ -22,49 +22,30 @@ public class CandidatePom {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    // =========================================================
-    // CANDIDATES LINK
-    // =========================================================
+  
 
     @FindBy(xpath="//a[normalize-space()='Candidates']")
     private WebElement candidatesButton;
 
 
-    // =========================================================
-    // JOB TITLE
-    // =========================================================
-
+ 
     @FindBy(xpath="(//div[contains(@class,'oxd-select-text')])[1]")
     private WebElement jobTitleDropdown;
 
-
-    // =========================================================
-    // VACANCY
-    // =========================================================
 
     @FindBy(xpath="(//div[contains(@class,'oxd-select-text')])[2]")
     private WebElement vacancyDropdown;
 
 
-    // =========================================================
-    // HIRING MANAGER
-    // =========================================================
-
     @FindBy(xpath="(//div[contains(@class,'oxd-select-text')])[3]")
     private WebElement hiringManagerDropdown;
 
 
-    // =========================================================
-    // STATUS
-    // =========================================================
 
     @FindBy(xpath="(//div[contains(@class,'oxd-select-text')])[4]")
     private WebElement statusDropdown;
 
 
-    // =========================================================
-    // CANDIDATE NAME
-    // =========================================================
 
     @FindBy(xpath="//input[@placeholder='Type for hints...']")
     private WebElement candidateName;
@@ -162,9 +143,6 @@ public class CandidatePom {
     }
 
 
-    // =========================================================
-    // HIRING MANAGER
-    // =========================================================
 
     public void selectHiringManager(String manager)
             throws InterruptedException {
@@ -272,9 +250,6 @@ public class CandidatePom {
     }
 
 
-    // =========================================================
-    // SEARCH
-    // =========================================================
 
     public void clickSearch() {
 
