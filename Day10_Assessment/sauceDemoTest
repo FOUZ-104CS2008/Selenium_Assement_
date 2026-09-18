@@ -1,0 +1,67 @@
+package Day10_BaseClassImplementation;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import Day10_BaseClassUtility.BaseClass1;
+import Day10_ExcelUtility.Utility;
+import Day10_PomPages.CartPage;
+import Day10_PomPages.CheckOutPage;
+import Day10_PomPages.LoginPage;
+import Day10_PomPages.ProductsPage;
+
+public class SauceDemoTest extends BaseClass1 {
+
+    @Test
+    public void loginTest() throws Exception {
+
+        String username =p.getProperty("username");
+        String password = p.getProperty("password");            
+        LoginPage loginPage =new LoginPage(driver);
+        loginPage.login(username, password);
+        Thread.sleep(3000);
+
+        ProductsPage productsPage =new ProductsPage(driver);
+        String actualTitle =   productsPage.getProductsTitle();     
+        Assert.assertEquals(actualTitle,"Products","Products page is not displayed");
+        Thread.sleep(1000);
+        System.out.println("Login Test Passed");
+    }
+
+    @Test(dependsOnMethods = "loginTest")
+    public void orderPlacementTest() throws Exception {
+
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.addBackpack();
+        String cartCount = productsPage.getCartCount();
+        Assert.assertEquals(cartCount, "1","Cart does not contain 1 item");
+        productsPage.clickCart();
+        Thread.sleep(1000);
+
+        CartPage cartPage =new CartPage(driver);
+        String itemName =cartPage.getBackpackName();
+        Assert.assertEquals(itemName,"Sauce Labs Backpack","Sauce Labs Backpack is not displayed");
+        cartPage.clickCheckout();
+        Thread.sleep(1000);
+        String firstName =Utility.getData("Sheet1", 1, 0);
+        String lastName =Utility.getData("Sheet1", 1, 1);            
+        String postalCode =Utility.getData("Sheet1", 1, 2);    
+           
+        CheckOutPage checkoutPage =new CheckOutPage(driver);       
+        checkoutPage.enterFirstName(firstName);
+        checkoutPage.enterLastName(lastName);
+        checkoutPage.enterPostalCode(postalCode);
+        Thread.sleep(1000);
+        checkoutPage.clickContinue();
+        Thread.sleep(1000);
+        String actualPageTitle =checkoutPage.getPageTitle();
+        Assert.assertEquals(actualPageTitle,"Checkout: Overview","Checkout: Overview page is not displayed");
+        Thread.sleep(1000);
+        checkoutPage.clickFinish();
+        String actualMessage =checkoutPage.getThankYouMessage();
+                
+        Assert.assertEquals(actualMessage,"Thank you for your order!","Thank you message is not displayed");
+        System.out.println("Order Message: " + actualMessage);
+        System.out.println("Order Placement Test Passed");
+    }
+}
