@@ -1,4 +1,4 @@
-package BaseClassUtility;
+package Day10_BaseClassUtility;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,91 +8,42 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 
-import PomUtilities.saudceLOdin;
+public class BaseClass1 {
 
+    protected WebDriver driver;
+    protected Properties p;
 
-public class BaseClass {
+    @BeforeClass
+    public void openBrowser() throws IOException {
 
-    protected WebDriver driver = null;
-    Properties p = new Properties();
-
-    @BeforeSuite
-    public void bs() throws IOException {
-
-        System.out.println("Establish Database Connectivity");
-
-        FileInputStream fis = new FileInputStream("./src/test/resources/DDT/commondata.properties");
+        FileInputStream fis =
+                new FileInputStream( "./src/test/resources/DDT/commondata.properties");                  
+        p = new Properties();
         p.load(fis);
+
+        String browser = p.getProperty("browser");
+        if (browser.equals("chrome")) {
+            driver = new ChromeDriver();
+        } 
+        else if (browser.equals("edge")) {
+            driver = new EdgeDriver();
+        }
+        else {
+            throw new RuntimeException("Invalid browser name");
+        }
+
+        driver.manage().window().maximize();
+        driver.get(p.getProperty("url"));
         fis.close();
     }
 
-    @BeforeTest
-    public void bt() {
-
-        System.out.println("Precondition");
-    }
-
-    @BeforeClass
-    public void bc() {
-
-        String browser = p.getProperty("browser");
-
-        if (browser.equalsIgnoreCase("chrome")) {
-
-            driver = new ChromeDriver();
-
-        } else if (browser.equalsIgnoreCase("edge")) {
-
-            driver = new EdgeDriver();
-        }
-
-        System.out.println("Launch Browser");
-    }
-
-    @BeforeMethod
-    public void bm() {
-
-        String URL = p.getProperty("url");
-        String USERNAME = p.getProperty("username");
-        String PASSWORD = p.getProperty("password");
-        driver.get(URL);
-        saudceLOdin login = new saudceLOdin(driver);
-        login.enterUsername(USERNAME);
-        login.enterPassword(PASSWORD);
-        login.clickLogin();
-    }
-
-    @AfterMethod
-    public void am() {
-
-        System.out.println("Logout done");
-    }
-
     @AfterClass
-    public void ac() {
+    public void closeBrowser() {
 
-        driver.quit();
-
-        System.out.println("Browser closed");
-    }
-
-    @AfterTest
-    public void at() {
-
-        System.out.println("Post condition");
-    }
-
-    @AfterSuite
-    public void as() {
-
-        System.out.println("Close database connectivity");
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
