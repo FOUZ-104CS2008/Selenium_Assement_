@@ -1,0 +1,65 @@
+package Day10_PomPages;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class CheckOutPage {
+
+    WebDriver driver;
+
+    public CheckOutPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(id = "first-name")
+    private WebElement firstName;
+
+    @FindBy(id = "last-name")
+    private WebElement lastName;
+
+    @FindBy(id = "postal-code")
+    private WebElement postalCode;
+
+    @FindBy(id = "continue")
+    private WebElement continueButton;
+
+    @FindBy(className = "title")
+    private WebElement pageTitle;
+
+    @FindBy(id = "finish")
+    private WebElement finishButton;
+
+    @FindBy(className = "complete-header")
+    private WebElement thankYouMessage;
+
+    public void enterFirstName(String fname) {
+        firstName.sendKeys(fname);
+    }
+
+    public void enterLastName(String lname) {
+        lastName.sendKeys(lname);
+    }
+
+    public void enterPostalCode(String postal) {
+        postalCode.sendKeys(postal);
+    }
+
+    public void clickContinue() {
+        continueButton.click();
+    }
+
+    public String getPageTitle() {
+        return pageTitle.getText();
+    }
+
+    public void clickFinish() {
+        finishButton.click();
+    }
+
+    public String getThankYouMessage() {
+        return thankYouMessage.getText();
+    }
+}
