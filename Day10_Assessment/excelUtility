@@ -13,21 +13,13 @@ public class Utility {
             int row,
             int cell) throws Exception {
 
-        FileInputStream fis =
-                new FileInputStream(
-                        "./src/test/resources/DDT/sauceDemo10_asse.xlsx");
+        FileInputStream fis = new FileInputStream("./src/test/resources/DDT/sauceDemo10_asse.xlsx");
+             
 
-        Workbook workbook =
-                WorkbookFactory.create(fis);
+        Workbook workbook = WorkbookFactory.create(fis);
+        DataFormatter formatter = new DataFormatter();
 
-        DataFormatter formatter =
-                new DataFormatter();
-
-        String data =
-                formatter.formatCellValue(
-                        workbook.getSheet(sheetName)
-                                .getRow(row)
-                                .getCell(cell));
+        String data = formatter.formatCellValue(workbook.getSheet(sheetName).getRow(row).getCell(cell));
 
         workbook.close();
         fis.close();
