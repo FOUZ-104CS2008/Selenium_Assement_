@@ -1,44 +1,62 @@
 package Day10_PomPages;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ProductsPage {
 
     WebDriver driver;
+    WebDriverWait wait;
 
     public ProductsPage(WebDriver driver) {
+
         this.driver = driver;
+        wait = new WebDriverWait(driver,Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(className = "title")
+    @FindBy(xpath = "//span[text()='Products']")
     private WebElement productsTitle;
 
     @FindBy(id = "add-to-cart-sauce-labs-backpack")
     private WebElement backpack;
 
     @FindBy(className = "shopping_cart_badge")
-    private WebElement cartBadge;
+    private WebElement cartCount;
 
     @FindBy(className = "shopping_cart_link")
-    private WebElement cartIcon;
+    private WebElement cart;
 
     public String getProductsTitle() {
+
         return productsTitle.getText();
     }
 
     public void addBackpack() {
+
+        wait.until( ExpectedConditions.elementToBeClickable(backpack));
         backpack.click();
+
+        System.out.println("Backpack added to cart");
     }
 
     public String getCartCount() {
-        return cartBadge.getText();
+
+        wait.until(ExpectedConditions.visibilityOf(cartCount));
+        return cartCount.getText();
     }
 
     public void clickCart() {
-        cartIcon.click();
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(cart));
+
+        cart.click();
     }
 }
