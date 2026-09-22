@@ -1,0 +1,213 @@
+package Day12_Assessment;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import Day12_Pom.HomePage;
+import Day12_Pom.Login;
+import Day12_Pom.Recuriment;
+import Day12_Pom.myinfo;
+import Day12_Pom.vacancy;
+
+public class TestCase extends BaseClass {
+
+
+    @DataProvider
+    public Object[][] vacancaiesDetails()
+            throws EncryptedDocumentException, IOException {
+
+        FileInputStream fis = new FileInputStream(
+                "./src/test/resources/DDT/Vacency (1).xlsx");
+
+        Workbook wb = WorkbookFactory.create(fis);
+        Sheet sh = wb.getSheet("Sheet1");
+
+        int rowCount = sh.getLastRowNum();
+
+        Object[][] obj = new Object[rowCount][3];
+
+        for (int row = 1; row <= rowCount; row++) {
+
+            obj[row - 1][0] =
+                    sh.getRow(row).getCell(0).getStringCellValue();
+
+            obj[row - 1][1] =
+                    sh.getRow(row).getCell(1).getStringCellValue();
+
+            obj[row - 1][2] =
+                    sh.getRow(row).getCell(2).getStringCellValue();
+        }
+
+        wb.close();
+
+        return obj;
+    }
+
+
+
+    @Test(dataProvider = "vacancaiesDetails")
+    public void testCase1(String vname, String Description,
+            String HRmanager) throws InterruptedException, AWTException {
+        // Home Page
+        HomePage h = new HomePage(driver);
+        // Recruitment
+        h.getRecruitmrnt();
+        Thread.sleep(2000);
+        // Recruitment Page
+        Recuriment r = new Recuriment(driver);
+        r.getVac();
+        Thread.sleep(2000);
+        r.getAdd();
+        Thread.sleep(2000);
+        // Vacancy Page
+        vacancy v = new vacancy(driver);
+        // Vacancy Name
+        v.getVname(vname);
+        // Job Title
+        v.getJobdd();
+        Thread.sleep(1000);
+        v.getJobtitle();
+        // Description
+        v.getDescription(Description);
+
+        // Hiring Manager
+        v.getHiringmanager(HRmanager);
+
+        Thread.sleep(2000);
+
+        // Select Hiring Manager
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_DOWN);
+        robot.keyRelease(KeyEvent.VK_DOWN);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        Thread.sleep(2000);
+        // Number of Positions
+        v.getNoOfPositions();
+        // Save
+        v.getSubmit();
+        Thread.sleep(3000);
+        // Logout
+        h.getProfie();
+        Thread.sleep(1000);
+        h.getLogout();
+        Thread.sleep(2000);
+    }
+
+
+    @DataProvider
+    public Object[][] MyinfoDetails()
+            throws EncryptedDocumentException, IOException {
+
+        FileInputStream fis = new FileInputStream( "./src/test/resources/DDT/myinfo (1).xlsx");
+               
+        Workbook wb = WorkbookFactory.create(fis);
+        Sheet sh = wb.getSheet("Sheet1");
+        int rowCount = sh.getLastRowNum();
+        Object[][] obj = new Object[rowCount][4];
+        for (int row = 1; row <= rowCount; row++) {
+
+            obj[row - 1][0] =sh.getRow(row).getCell(0).getStringCellValue();
+            obj[row - 1][1] =sh.getRow(row).getCell(1).getStringCellValue();
+            obj[row - 1][2] =sh.getRow(row).getCell(2).getStringCellValue();
+            obj[row - 1][3] = sh.getRow(row).getCell(3).getStringCellValue();
+                   
+        }
+
+        wb.close();
+        return obj;
+    }
+
+    @Test(dataProvider = "MyinfoDetails")
+    public void testcase2(String fn, String mn, String ln, String empid)
+            throws InterruptedException {
+
+        System.out.println(fn + " " + mn + " " + ln + " " + empid);
+
+        // Home Page
+        HomePage h = new HomePage(driver);
+
+        // My Info
+        h.getMyinfo();
+
+        Thread.sleep(3000);
+
+        // My Info POM
+        myinfo i = new myinfo(driver);
+
+        // First Name
+        i.getFirstname(fn);
+
+        // Middle Name
+        i.getMidname(mn);
+
+        // Last Name
+        i.getLastname(ln);
+
+        // Employee ID
+        i.getEmployeeid(empid);
+
+        Thread.sleep(1000);
+
+        // Save
+        i.getSavebtn();
+
+        Thread.sleep(3000);
+
+        h.getProfie();
+
+        Thread.sleep(1000);
+
+        h.getLogout();
+
+        Thread.sleep(3000);
+
+
+        Login login = new Login(driver);
+
+        login.getUn("Admin");
+
+        login.getPwd("admin123");
+
+        login.getLgbutton();
+
+        Thread.sleep(3000);
+
+        h.getMyinfo();
+
+        Thread.sleep(3000);
+
+        // Create new POM object after login
+        myinfo i1 = new myinfo(driver);
+
+        // Get updated values
+        String actualFirstName = i1.getFirstNameValue();
+        String actualLastName = i1.getLastNameValue();
+        System.out.println("Actual First Name: " + actualFirstName);
+        System.out.println("Actual Last Name: " + actualLastName);
+
+
+        Assert.assertEquals(actualFirstName, fn);
+        Assert.assertEquals(actualLastName, ln);
+
+
+        h.getProfie();
+
+        Thread.sleep(1000);
+
+        h.getLogout();
+
+        Thread.sleep(2000);
+    }
+}
