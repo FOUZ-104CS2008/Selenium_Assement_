@@ -1,0 +1,29 @@
+package Day12_Pom;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class Recuriment {
+	WebDriver driver;
+	public Recuriment(WebDriver driver) {
+		this.driver=driver;
+		PageFactory.initElements(driver, this);
+	}
+	//vacancies
+	@FindBy(xpath="//a[text()='Vacancies']")
+	private WebElement vac;
+	public void getVac() {
+		vac.click();
+	}
+	//vacancie addbutton
+	@FindBy(xpath="(//button[@type=\"button\"])[6]")
+	private WebElement add;
+	public void getAdd() {
+		add.click();
+	}
+
+}
+
+
