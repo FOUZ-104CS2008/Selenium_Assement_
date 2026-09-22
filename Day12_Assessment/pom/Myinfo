@@ -1,0 +1,81 @@
+
+package Day12_Pom;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class myinfo {
+
+    WebDriver driver;
+
+    public myinfo(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(xpath = "//input[@name='firstName']")
+    private WebElement firstname;
+
+    public void getFirstname(String value) {
+        firstname.clear();
+        firstname.sendKeys(value);
+    }
+
+    @FindBy(xpath = "//input[@name='middleName']")
+    private WebElement midname;
+
+    public void getMidname(String value) {
+        midname.clear();
+        midname.sendKeys(value);
+    }
+
+    @FindBy(xpath = "//input[@name='lastName']")
+    private WebElement lastname;
+
+    public void getLastname(String value) {
+        lastname.clear();
+        lastname.sendKeys(value);
+    }
+
+    @FindBy(xpath = "//label[text()='Employee Id']/parent::div/following-sibling::div/child::input")
+    private WebElement employeeid;
+
+    public void getEmployeeid(String value) {
+        employeeid.clear();
+        employeeid.sendKeys(value);
+    }
+
+    @FindBy(xpath = "(//button[@type='submit'])[1]")
+    private WebElement savebtn;
+
+    public void getSavebtn() {
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+        // Wait until form loader disappears
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//div[contains(@class,'oxd-form-loader')]")));
+
+        // Wait until Save button is clickable
+        wait.until(ExpectedConditions.elementToBeClickable(savebtn));
+
+        savebtn.click();
+    }
+
+    // Verification methods
+
+    public String getFirstNameValue() {
+        return firstname.getAttribute("value");
+    }
+
+    public String getLastNameValue() {
+        return lastname.getAttribute("value");
+    }
+}
