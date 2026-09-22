@@ -1,0 +1,67 @@
+package Day12_Pom;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class vacancy {
+	WebDriver driver;
+	public vacancy(WebDriver driver) {
+		this.driver=driver;
+		PageFactory.initElements(driver, this);
+	}
+	//vacancyname
+	@FindBy(xpath="(//input[@class=\"oxd-input oxd-input--active\"])[2]")
+	private WebElement vname;
+	public void getVname(String value) {
+		vname.sendKeys(value);
+	}
+	
+	//description
+	@FindBy(xpath="//textarea[@placeholder=\"Type description here\"]")
+	private WebElement description;
+	public void getDescription(String value) {
+		description.sendKeys(value);
+	}
+	//hiring manager
+	@FindBy(xpath="//input[@placeholder=\"Type for hints...\"]")
+	private WebElement hiringmanager;
+	public void getHiringmanager(String value) {
+		hiringmanager.sendKeys(value);
+	}
+	//no of position
+	@FindBy(xpath="//label[normalize-space()='Number of Positions']/ancestor::div[contains(@class,'oxd-input-group')]//input")
+	private WebElement noOfPositions;
+	public void getNoOfPositions() {
+	    noOfPositions.sendKeys("20");
+	}
+	
+	//submit
+	@FindBy(xpath="//button[@type=\"submit\"]")
+	private WebElement submit;
+	public void getSubmit() {
+		submit.click();
+	}
+	//jobtitledropdown
+	@FindBy(xpath="//div[@class=\"oxd-select-text-input\"]")
+	private WebElement jobdd;
+	
+	//jobtitle
+	@FindBy(xpath="//div[@role='option']//span[normalize-space(text())='Software Engineer']")
+	private WebElement jobtitle;
+	
+	
+	public void getJobdd() {
+		jobdd.click();;
+	}
+
+	public void getJobtitle() {
+		jobtitle.click();;
+	}
+	
+	
+
+}
+
+
