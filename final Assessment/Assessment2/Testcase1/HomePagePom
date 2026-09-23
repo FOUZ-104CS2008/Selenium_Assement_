@@ -1,0 +1,45 @@
+package Day1Assigment.FinalCapgeminiAssesment1.Assesment2;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class POMBuzzPage {
+	WebDriver driver;
+	public POMBuzzPage(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver,this);
+	}
+	
+	@FindBy(xpath="//textarea[@placeholder=\"What's on your mind?\"]")
+	private WebElement TextArea;
+
+	public void getTextArea() {
+		TextArea.click();
+		TextArea.sendKeys("Hi fouz");
+	}
+	
+	@FindBy(xpath="//button[@type='submit']")
+	private WebElement post;
+	
+	public void getPost() {
+		post.click();
+	}
+
+	@FindBy(xpath = "//p[normalize-space()='Hi fouz']")
+	private WebElement msg;
+	
+	public String getMsg() {
+		return msg.getText();
+	}
+	
+	
+
+	
+
+
+	
+	
+
+}
